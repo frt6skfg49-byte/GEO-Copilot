@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[47257,["/GEO-Copilot/_next/static/chunks/3rs-2n8ukah-3.js","/GEO-Copilot/_next/static/chunks/3e606txrkfbgy.js","/GEO-Copilot/_next/static/chunks/1-8s9_t85wwr4.js","/GEO-Copilot/_next/static/chunks/2v7wtdrte5hu5.js"],"ClientPageRoot"]
+3:I[55380,["/GEO-Copilot/_next/static/chunks/3rs-2n8ukah-3.js","/GEO-Copilot/_next/static/chunks/3e606txrkfbgy.js","/GEO-Copilot/_next/static/chunks/1-8s9_t85wwr4.js","/GEO-Copilot/_next/static/chunks/2v7wtdrte5hu5.js","/GEO-Copilot/_next/static/chunks/2pzq7j17uu525.js","/GEO-Copilot/_next/static/chunks/34m-rs0hbrjzl.js"],"default"]
+6:I[97367,["/GEO-Copilot/_next/static/chunks/3rs-2n8ukah-3.js","/GEO-Copilot/_next/static/chunks/3e606txrkfbgy.js","/GEO-Copilot/_next/static/chunks/1-8s9_t85wwr4.js","/GEO-Copilot/_next/static/chunks/2v7wtdrte5hu5.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/GEO-Copilot/_next/static/chunks/2pzq7j17uu525.js","async":true}],["$","script","script-1",{"src":"/GEO-Copilot/_next/static/chunks/34m-rs0hbrjzl.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fffuFDM1za8g7N_JIgLwB"}
+4:{}
+5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
+8:null
