@@ -1,0 +1,13 @@
+{
+  "name": "GEO Copilot",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "App",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "postCreateCommand": "cd apps/web && npm install",
+  "postStartCommand": "cd apps/web && NEXT_PUBLIC_USE_MOCK=true npm run dev"
+}
