@@ -6,9 +6,8 @@ import type { AnalysisDetail } from "@/lib/types";
 
 export function useAnalysis(id: string | null) {
   const { data, error, isLoading, mutate } = useSWR(
-    id ? `analysis_${id}` : null,
-    async (key: string) => {
-      const analysisId = key.replace("analysis_", "");
+    id ?? null,
+    async (analysisId: string) => {
       return getAnalysis(analysisId);
     },
     {

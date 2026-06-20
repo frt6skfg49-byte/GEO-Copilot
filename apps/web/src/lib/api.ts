@@ -18,13 +18,17 @@ export async function createAnalysis(
 ): Promise<Analysis> {
   if (USE_MOCK) {
     await delay(600);
+    // Return a pre-rendered analysis ID so it works with static export (GitHub Pages)
+    const staticIds = ["analysis_001", "analysis_002", "analysis_003"];
+    const idx = Math.floor(Math.random() * staticIds.length);
     return {
-      id: `analysis_${Date.now()}`,
+      id: staticIds[idx],
       input_url: data.url,
       final_url: data.url,
-      status: "queued",
+      status: "completed",
       language: data.language ?? "zh-CN",
       created_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
     };
   }
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analyses`, {
