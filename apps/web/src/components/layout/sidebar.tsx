@@ -23,14 +23,14 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 z-40 flex h-full w-[240px] flex-col border-r border-sidebar-border bg-sidebar">
       {/* Logo */}
       <div className="flex h-14 items-center gap-3 px-5">
-        <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/10">
-          <Sparkles className="size-4 text-emerald-400" />
+        <div className="flex size-8 items-center justify-center rounded-lg bg-primary/8">
+          <Sparkles className="size-4 text-primary" />
         </div>
         <div>
           <span className="text-sm font-semibold tracking-tight text-sidebar-foreground">
             GEO Copilot
           </span>
-          <span className="ml-1.5 rounded bg-emerald-500/15 px-1.5 py-0 text-[10px] font-medium text-emerald-400">
+          <span className="ml-1.5 rounded bg-primary/10 px-1.5 py-0 text-[10px] font-medium text-primary">
             BETA
           </span>
         </div>
@@ -58,7 +58,7 @@ export function Sidebar() {
               <item.icon className="size-4 shrink-0" />
               <span className="flex-1">{item.label}</span>
               {isActive && (
-                <ChevronRight className="size-3 text-emerald-400" />
+                <ChevronRight className="size-3 text-primary" />
               )}
             </Link>
           );

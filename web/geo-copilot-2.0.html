@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEO Copilot — AI 搜索优化诊断</title>
+<meta name="description" content="输入任意网址，基于页面证据和GEO前沿方法知识库，获得结构化优化反馈报告">
+<meta property="og:title" content="GEO Copilot — AI 搜索优化诊断">
+<meta property="og:description" content="输入任意网址，基于页面证据和GEO前沿方法知识库，获得结构化优化反馈报告">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   GEO Copilot Design 2.0 — All Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ─────────────────────────────────────────────────────── */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #f0f2f5;
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a6a;
+  --text-tertiary: #8e8ea0;
+  --accent-primary: #162447;
+  --accent-secondary: #2c3e6b;
+  --accent-score: #1b4332;
+  --accent-warning: #8b6914;
+  --accent-danger: #7c2d3e;
+  --border-light: #e2e4e9;
+  --border-medium: #cdd0d6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+  --max-width: 1120px;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --nav-height: 64px;
+}
+
+/* ── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+button { cursor: pointer; font: inherit; border: none; background: none; }
+pre, code { font-family: var(--font-mono); }
+
+/* ── Typography ────────────────────────────────────────────────────────── */
+.section-label {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent-secondary);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700;
+  line-height: 1.15; color: var(--text-primary); letter-spacing: -0.02em;
+}
+.section-subtitle {
+  font-size: 1.05rem; color: var(--text-tertiary); margin-top: 0.75rem;
+  max-width: 560px; line-height: 1.6;
+}
+.body-lg { font-size: 1.05rem; line-height: 1.7; }
+.body-sm { font-size: 0.875rem; line-height: 1.65; }
+.caption { font-size: 0.75rem; font-weight: 500; color: var(--text-tertiary); }
+
+/* ── Layout Utilities ──────────────────────────────────────────────────── */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+.section { padding: 6rem 0; }
+.section--alt { background: var(--bg-secondary); }
+.section-header { text-align: center; margin-bottom: 3.5rem; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.text-center { text-align: center; }
+
+/* ── Navigation ────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-height);
+  transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.nav--scrolled {
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+.nav__inner {
+  max-width: var(--max-width); margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%;
+}
+.nav__logo { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+.nav__logo span { color: var(--accent-secondary); }
+.nav__links { display: flex; gap: 2rem; align-items: center; }
+.nav__links a {
+  font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);
+  transition: color 0.2s; position: relative;
+}
+.nav__links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px;
+  background: var(--accent-primary); transition: width 0.25s;
+}
+.nav__links a:hover { color: var(--accent-primary); }
+.nav__links a:hover::after { width: 100%; }
+.nav__hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+.nav__hamburger span { display: block; width: 22px; height: 2px; background: var(--text-primary); border-radius: 1px; transition: all 0.3s; }
+.nav__mobile { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light); padding: 1.5rem 2rem; flex-direction: column; gap: 1.25rem; z-index: 99; }
+.nav__mobile a { font-size: 1rem; font-weight: 500; color: var(--text-primary); }
+.nav__mobile--open { display: flex; }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1.6rem; border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-weight: 600; transition: all 0.25s;
+  white-space: nowrap;
+}
+.btn--primary {
+  background: var(--accent-primary); color: #fff;
+}
+.btn--primary:hover { background: var(--accent-secondary); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn--primary:active { transform: scale(0.97); }
+.btn--secondary {
+  background: transparent; color: var(--accent-primary);
+  border: 1.5px solid var(--border-medium);
+}
+.btn--secondary:hover { border-color: var(--accent-primary); }
+.btn__arrow { transition: transform 0.25s; }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+
+/* ── Hero Section ──────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  padding: calc(var(--nav-height) + 3rem) 0 5rem;
+  position: relative; overflow: hidden;
+}
+.hero__bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 30% 40%, rgba(22,36,71,0.03) 0%, transparent 50%),
+              radial-gradient(circle at 70% 60%, rgba(44,62,107,0.02) 0%, transparent 50%);
+}
+.hero__watermark {
+  position: absolute; top: 50%; left: -5%; transform: translateY(-50%);
+  font-size: clamp(6rem, 12vw, 14rem); font-weight: 800;
+  color: rgba(22,36,71,0.015); white-space: nowrap;
+  pointer-events: none; line-height: 0.85; user-select: none;
+  letter-spacing: -0.04em;
+}
+.hero__inner { position: relative; z-index: 1; }
+.hero__tagline {
+  display: inline-block; font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.06em; color: var(--accent-secondary);
+  margin-bottom: 1.5rem; opacity: 0; animation: fadeIn 0.6s 0.1s forwards;
+}
+.hero__title {
+  font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 800;
+  line-height: 1.05; color: var(--text-primary); letter-spacing: -0.03em;
+  margin-bottom: 1.25rem; opacity: 0; animation: fadeInUp 0.7s 0.35s forwards;
+}
+.hero__sub {
+  font-size: 1.05rem; color: var(--text-tertiary); max-width: 520px;
+  line-height: 1.7; margin-bottom: 2rem;
+  opacity: 0; animation: fadeInUp 0.7s 0.55s forwards;
+}
+
+/* ── URL Form ──────────────────────────────────────────────────────────── */
+.url-form {
+  max-width: 620px; opacity: 0; animation: fadeInUp 0.7s 0.75s forwards;
+}
+.url-form__group {
+  display: flex; align-items: center; gap: 0;
+  border: 1.5px solid var(--border-medium); border-radius: var(--radius-md);
+  background: var(--bg-primary); overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.url-form__group:focus-within {
+  border-color: var(--accent-secondary); box-shadow: 0 0 0 3px rgba(44,62,107,0.08);
+}
+.url-form__group--error { border-color: var(--accent-danger); }
+.url-form__group--error:focus-within { box-shadow: 0 0 0 3px rgba(124,45,62,0.08); }
+.url-form__icon {
+  display: flex; align-items: center; padding-left: 1rem;
+  color: var(--text-tertiary); flex-shrink: 0;
+}
+.url-form__input {
+  flex: 1; border: none; outline: none; padding: 0.85rem 0.75rem;
+  font-size: 0.95rem; color: var(--text-primary); background: transparent;
+  min-width: 0;
+}
+.url-form__input::placeholder { color: var(--text-tertiary); }
+.url-form__error { font-size: 0.8rem; color: var(--accent-danger); margin-top: 0.5rem; display: none; }
+.url-form__error--visible { display: block; }
+.url-form__advanced { margin-top: 0.75rem; }
+.url-form__advanced-toggle {
+  font-size: 0.8rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;
+  transition: color 0.2s;
+}
+.url-form__advanced-toggle:hover { color: var(--text-secondary); }
+.url-form__advanced-panel { display: none; margin-top: 0.75rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-sm); }
+.url-form__advanced-panel--open { display: block; }
+.url-form__advanced-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.url-form__select { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-primary); background: var(--bg-primary); outline: none; transition: border-color 0.2s; }
+.url-form__select:focus { border-color: var(--accent-secondary); }
+
+/* ── Recent Links ──────────────────────────────────────────────────────── */
+.recent { margin-top: 2rem; opacity: 0; animation: fadeInUp 0.7s 0.9s forwards; }
+.recent__title { font-size: 0.8rem; font-weight: 500; color: var(--text-tertiary); margin-bottom: 0.5rem; }
+.recent__list { display: flex; gap: 1rem; flex-wrap: wrap; }
+.recent__link { font-size: 0.85rem; color: var(--text-secondary); padding: 0.3rem 0.8rem; border: 1px solid var(--border-light); border-radius: 100px; transition: all 0.2s; cursor: pointer; }
+.recent__link:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+
+/* ── Scroll Indicator ──────────────────────────────────────────────────── */
+.scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  opacity: 0; animation: fadeIn 1s 1.2s forwards;
+}
+.scroll-indicator__dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--text-tertiary);
+  animation: pulseDot 2s infinite;
+}
+
+/* ── Section Decoration ────────────────────────────────────────────────── */
+.section-divider {
+  display: flex; justify-content: center; padding: 0; margin: 0;
+}
+.section-divider::after {
+  content: ''; width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-medium), transparent);
+}
+
+/* ── Value Prop Cards ──────────────────────────────────────────────────── */
+.value-card {
+  background: var(--bg-secondary); border-radius: var(--radius-lg);
+  padding: 2rem; transition: all 0.3s;
+  border: 1px solid transparent;
+}
+.value-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-light); }
+.value-card__icon {
+  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  background: rgba(22,36,71,0.06); display: flex; align-items: center;
+  justify-content: center; margin-bottom: 1.25rem; color: var(--accent-secondary);
+}
+.value-card__title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.6rem; }
+
+/* ── Capability Cards ──────────────────────────────────────────────────── */
+.capability-card {
+  background: var(--bg-primary); border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg); padding: 2rem; transition: all 0.3s;
+}
+.capability-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.capability-card__number { font-size: 2.8rem; font-weight: 800; color: rgba(22,36,71,0.06); line-height: 1; display: block; margin-bottom: 0.75rem; }
+.capability-card__title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+.capability-card__desc { margin-bottom: 1rem; }
+.capability-card__list { display: flex; flex-direction: column; gap: 0.5rem; }
+.capability-card__list li {
+  font-size: 0.85rem; color: var(--text-secondary); padding-left: 1.2rem;
+  position: relative;
+}
+.capability-card__list li::before {
+  content: ''; position: absolute; left: 0; top: 0.55em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--border-medium);
+}
+
+/* ── Industry / Page-Type Cards ────────────────────────────────────────── */
+.industry-scroll { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.industry-scroll::-webkit-scrollbar { display: none; }
+.industry-card {
+  flex: 0 0 220px; scroll-snap-align: start;
+  background: var(--bg-secondary); border-radius: var(--radius-lg);
+  padding: 1.75rem; text-align: center; transition: all 0.3s;
+  border: 1px solid transparent;
+}
+.industry-card:hover { border-color: var(--border-light); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+.industry-card__icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.industry-card__title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; }
+
+/* ── Stats ─────────────────────────────────────────────────────────────── */
+.stat { text-align: center; }
+.stat__number { font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.stat__label { font-size: 0.8rem; font-weight: 500; color: var(--text-tertiary); margin-top: 0.4rem; display: block; }
+
+/* ── Workflow Stepper ──────────────────────────────────────────────────── */
+.stepper { display: flex; justify-content: center; align-items: flex-start; gap: 0; max-width: 900px; margin: 0 auto; }
+.stepper__step { flex: 1; text-align: center; position: relative; padding: 0 0.5rem; }
+.stepper__dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border-medium); margin: 0 auto 0.75rem; transition: background 0.3s; }
+.stepper__step--active .stepper__dot { background: var(--accent-primary); }
+.stepper__line { position: absolute; top: 6px; left: calc(50% + 6px); width: calc(100% - 12px); height: 1px; background: var(--border-light); }
+.stepper__step:last-child .stepper__line { display: none; }
+.stepper__step-title { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; }
+.stepper__step-desc { font-size: 0.75rem; color: var(--text-tertiary); }
+
+/* ── Insight Cards ─────────────────────────────────────────────────────── */
+.insight-card {
+  background: var(--bg-secondary); border-radius: var(--radius-lg);
+  padding: 1.75rem; transition: all 0.3s;
+  border: 1px solid transparent;
+}
+.insight-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.insight-card__badge {
+  display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+  border-radius: 100px; margin-bottom: 0.75rem;
+}
+.insight-card__badge--high { background: rgba(27,67,50,0.1); color: var(--accent-score); }
+.insight-card__badge--medium { background: rgba(139,105,20,0.1); color: var(--accent-warning); }
+.insight-card__title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+.insight-card__excerpt { font-size: 0.85rem; color: var(--text-secondary); }
+
+/* ── FAQ Accordion ─────────────────────────────────────────────────────── */
+.faq { max-width: 720px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border-light); }
+.faq-item__question {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 0; font-size: 1rem; font-weight: 500; color: var(--text-primary);
+  transition: color 0.2s; text-align: left; cursor: pointer;
+}
+.faq-item__question:hover { color: var(--accent-secondary); }
+.faq-item__chevron { flex-shrink: 0; width: 18px; height: 18px; transition: transform 0.35s; color: var(--text-tertiary); }
+.faq-item--open .faq-item__chevron { transform: rotate(180deg); }
+.faq-item__answer { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.faq-item__answer-inner { padding-bottom: 1.2rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+
+/* ── Analysis Result ───────────────────────────────────────────────────── */
+.analysis { display: none; }
+.analysis--visible { display: block; }
+.analysis__header { margin-bottom: 2rem; }
+.analysis__url { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; }
+.analysis__meta { font-size: 0.8rem; color: var(--text-tertiary); margin-top: 0.3rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* Score Ring */
+.score-overview { display: grid; grid-template-columns: 200px 1fr; gap: 2.5rem; align-items: center; margin-bottom: 2.5rem; }
+.score-ring-wrap { display: flex; flex-direction: column; align-items: center; }
+.score-ring { width: 160px; height: 160px; }
+.score-ring__bg { fill: none; stroke: var(--border-light); stroke-width: 7; }
+.score-ring__progress { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.score-ring__number { font-size: 2.4rem; font-weight: 700; fill: var(--text-primary); }
+.score-ring__label { font-size: 0.7rem; fill: var(--text-tertiary); }
+.score-text { font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem; }
+
+/* Score Bars */
+.score-bars { display: flex; flex-direction: column; gap: 0.9rem; }
+.score-bar { display: flex; align-items: center; gap: 0.75rem; }
+.score-bar__label { width: 100px; font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); text-align: right; flex-shrink: 0; }
+.score-bar__track { flex: 1; height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden; }
+.score-bar__fill { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.score-bar__value { width: 36px; font-size: 0.78rem; font-weight: 600; color: var(--text-primary); flex-shrink: 0; }
+
+/* Executive Summary */
+.exec-summary { background: var(--bg-secondary); border-left: 3px solid var(--accent-secondary); padding: 1.5rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 2.5rem; }
+.exec-summary__title { font-size: 0.85rem; font-weight: 600; color: var(--accent-secondary); margin-bottom: 0.5rem; }
+
+/* Selection/Absorption Cards */
+.layer-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+.layer-card { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 1.5rem; }
+.layer-card__title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
+.layer-card__status { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; margin-bottom: 0.35rem; }
+.layer-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.layer-dot--good { background: var(--accent-score); }
+.layer-dot--warn { background: var(--accent-warning); }
+.layer-dot--bad { background: var(--accent-danger); }
+.layer-card__blocker { font-size: 0.8rem; color: var(--accent-danger); padding-left: 1rem; position: relative; margin-top: 0.15rem; }
+.layer-card__blocker::before { content: '—'; position: absolute; left: 0; }
+
+/* Tabs */
+.tabs { margin-bottom: 2rem; }
+.tabs__list { display: flex; gap: 0; border-bottom: 1.5px solid var(--border-light); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tabs__list::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 0.7rem 1.1rem; font-size: 0.85rem; font-weight: 500;
+  color: var(--text-tertiary); white-space: nowrap; border-bottom: 2px solid transparent;
+  margin-bottom: -1.5px; transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn--active { color: var(--accent-primary); border-bottom-color: var(--accent-primary); }
+.tab-btn__count { font-size: 0.7rem; margin-left: 0.3rem; }
+.tab-panel { display: none; animation: fadeIn 0.4s; }
+.tab-panel--active { display: block; }
+
+/* Issue Cards */
+.issue-card {
+  background: var(--bg-primary); border: 1px solid var(--border-light);
+  border-left: 3px solid; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 1.25rem; margin-bottom: 0.75rem; transition: all 0.2s;
+}
+.issue-card--high { border-left-color: var(--accent-danger); }
+.issue-card--medium { border-left-color: var(--accent-warning); }
+.issue-card--low { border-left-color: var(--accent-secondary); }
+.issue-card__header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.issue-card__finding { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.4rem; }
+.issue-card__why { font-size: 0.82rem; color: var(--text-secondary); }
+.issue-card__expand { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-light); font-size: 0.78rem; color: var(--text-tertiary); }
+.issue-card--open .issue-card__expand { display: block; }
+.issue-card__toggle { font-size: 0.78rem; color: var(--accent-secondary); cursor: pointer; margin-top: 0.5rem; display: inline-block; }
+
+/* Badge */
+.badge { display: inline-block; font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 100px; }
+.badge--danger { background: rgba(124,45,62,0.1); color: var(--accent-danger); }
+.badge--warning { background: rgba(139,105,20,0.1); color: var(--accent-warning); }
+.badge--info { background: rgba(44,62,107,0.1); color: var(--accent-secondary); }
+.badge--success { background: rgba(27,67,50,0.1); color: var(--accent-score); }
+.badge--outline { border: 1px solid var(--border-medium); color: var(--text-tertiary); background: transparent; }
+
+/* Action Cards */
+.action-card {
+  display: flex; gap: 1.25rem; padding: 1.25rem; background: var(--bg-primary);
+  border: 1px solid var(--border-light); border-radius: var(--radius-md);
+  margin-bottom: 0.75rem; transition: all 0.2s;
+}
+.action-card__priority {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+  color: var(--accent-primary); background: rgba(22,36,71,0.06);
+}
+.action-card__content { flex: 1; }
+.action-card__action { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; margin-bottom: 0.3rem; }
+.action-card__effect { font-size: 0.82rem; color: var(--text-secondary); }
+
+/* Asset Cards */
+.asset-card {
+  background: var(--bg-primary); border: 1px solid var(--border-light);
+  border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 0.75rem;
+}
+.asset-card__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+.asset-card__code {
+  background: var(--bg-secondary); border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm); padding: 1rem; overflow-x: auto;
+  font-size: 0.78rem; line-height: 1.6; white-space: pre; max-height: 300px; overflow-y: auto;
+}
+.asset-card__confirm { font-size: 0.75rem; color: var(--accent-warning); margin-top: 0.75rem; padding-left: 1rem; position: relative; }
+.asset-card__confirm::before { content: '⚠'; position: absolute; left: 0; }
+
+/* Copy Button */
+.copy-btn { font-size: 0.75rem; font-weight: 500; color: var(--accent-secondary); padding: 0.25rem 0.6rem; border: 1px solid var(--border-light); border-radius: 4px; transition: all 0.2s; }
+.copy-btn:hover { background: var(--bg-tertiary); }
+.copy-btn--copied { color: var(--accent-score); border-color: var(--accent-score); }
+
+/* CTA Footer */
+.cta { text-align: center; padding: 5rem 0; }
+.cta__title { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+.cta__sub { font-size: 1rem; color: var(--text-tertiary); margin-bottom: 2rem; }
+.footer-bottom { padding: 2rem 0; border-top: 1px solid var(--border-light); text-align: center; font-size: 0.78rem; color: var(--text-tertiary); }
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseDot { 0%, 100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(6px); } }
+
+.anim-fade-in-up {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.anim-fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+.anim-fade-in {
+  opacity: 0; transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.anim-fade-in.visible { opacity: 1; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .score-overview { grid-template-columns: 1fr; justify-items: center; }
+  .score-bars { width: 100%; }
+  .layer-cards { grid-template-columns: 1fr; }
+  .stepper { flex-wrap: wrap; gap: 1.5rem; }
+  .stepper__step { flex: 1 1 150px; }
+  .stepper__line { display: none; }
+  .section { padding: 4rem 0; }
+}
+@media (max-width: 767px) {
+  :root { --nav-height: 56px; }
+  .container { padding: 0 1.25rem; }
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .section { padding: 3rem 0; }
+  .section-title { font-size: 1.6rem; }
+  .hero__title { font-size: 2rem; }
+  .hero__watermark { display: none; }
+  .url-form__group { flex-wrap: wrap; }
+  .url-form__input { width: 100%; }
+  .url-form__advanced-row { grid-template-columns: 1fr; }
+  .score-bars { gap: 0.7rem; }
+  .score-bar__label { width: 70px; font-size: 0.7rem; }
+  .action-card { flex-direction: column; gap: 0.5rem; }
+  .anim-fade-in-up { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Navigation
+     ═════════════════════════════════════════════════════════════════════════ -->
+<header class="nav" id="topNav">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo">GEO<span>Copilot</span></a>
+    <nav class="nav__links">
+      <a href="#capabilities">诊断能力</a>
+      <a href="#workflow">工作流</a>
+      <a href="#faq">常见问题</a>
+      <a href="#analysis-section" class="btn btn--primary" style="padding:0.4rem 1rem;font-size:0.8rem;color:#fff;" onclick="event.preventDefault();showDemoAnalysis('analysis_001');">查看演示</a>
+    </nav>
+    <button class="nav__hamburger" id="hamburgerBtn" aria-label="菜单" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav__mobile" id="mobileNav">
+  <a href="#capabilities" onclick="toggleMobileNav()">诊断能力</a>
+  <a href="#workflow" onclick="toggleMobileNav()">工作流</a>
+  <a href="#faq" onclick="toggleMobileNav()">常见问题</a>
+  <a href="#analysis-section" onclick="event.preventDefault();showDemoAnalysis('analysis_001');toggleMobileNav();">查看演示</a>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 1: Hero
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__watermark">GEO</div>
+  <div class="container hero__inner">
+    <div class="hero__tagline">AI 搜索优化 — 让每个页面成为可引用的答案</div>
+    <h1 class="hero__title">GEO Copilot</h1>
+    <p class="hero__sub">输入任意网址，基于页面证据和 GEO 前沿方法知识库，获得结构化优化反馈报告</p>
+    <form class="url-form" onsubmit="handleAnalysis(event)">
+      <div class="url-form__group" id="urlFormGroup">
+        <span class="url-form__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/><path d="M2 12h20"/></svg>
+        </span>
+        <input type="text" class="url-form__input" id="urlInput"
+               placeholder="输入网址，开始 GEO 诊断..." value=""
+               oninput="clearError()" />
+        <button type="submit" class="btn btn--primary" id="submitBtn">
+          开始分析<span class="btn__arrow">&rarr;</span>
+        </button>
+      </div>
+      <p class="url-form__error" id="urlError"></p>
+      <div class="url-form__advanced">
+        <button type="button" class="url-form__advanced-toggle" onclick="toggleAdvanced()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          高级选项
+        </button>
+        <div class="url-form__advanced-panel" id="advancedPanel">
+          <div class="url-form__advanced-row">
+            <select class="url-form__select" id="languageSelect">
+              <option value="zh-CN">输出语言：简体中文</option>
+              <option value="en">English</option>
+              <option value="ja">日本語</option>
+            </select>
+            <select class="url-form__select" id="businessSelect">
+              <option value="">业务类型：自动检测</option>
+              <option value="b2b_saas">B2B SaaS</option>
+              <option value="ecommerce">电商</option>
+              <option value="tech_blog">技术博客</option>
+              <option value="api_docs">API 文档</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="recent">
+      <p class="recent__title">最近分析</p>
+      <div class="recent__list">
+        <span class="recent__link" onclick="showDemoAnalysis('analysis_001')">saas-product.com/pricing</span>
+        <span class="recent__link" onclick="showDemoAnalysis('analysis_001')">example.com/blog/ai-trends</span>
+        <span class="recent__link" onclick="showDemoAnalysis('analysis_001')">docs.theproduct.com/api</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span style="font-size:0.7rem;color:var(--text-tertiary);">探索更多</span>
+    <div class="scroll-indicator__dot"></div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 2: Value Proposition
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="value">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">Why GEO</p>
+      <h2 class="section-title">为什么 GEO 优化在 AI 时代不可或缺</h2>
+      <p class="section-subtitle" style="margin:0.75rem auto 0;">生成式引擎不靠排名，靠证据——让你的内容成为 AI 答案的原材料</p>
+    </div>
+    <div class="grid-3">
+      <div class="value-card anim-fade-in-up" style="transition-delay:0s">
+        <div class="value-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="value-card__title">从被索引到被引用</h3>
+        <p class="body-sm">传统 SEO 关注排名位置。GEO 关注内容是否在 AI 答案中被吸收和引用——这是根本性的范式转变。</p>
+      </div>
+      <div class="value-card anim-fade-in-up" style="transition-delay:0.1s">
+        <div class="value-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="value-card__title">证据即货币</h3>
+        <p class="body-sm">AI 搜索引擎不信任没有来源的主张。可验证的数据、引用和结构化信息是内容被安全引用的前提。</p>
+      </div>
+      <div class="value-card anim-fade-in-up" style="transition-delay:0.2s">
+        <div class="value-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3 class="value-card__title">双阶段诊断框架</h3>
+        <p class="body-sm">Citation Selection（能否被发现）+ Citation Absorption（能否被引用），全面覆盖 GEO 就绪度的两大入口。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="section-divider"></div>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 3: 6 Capabilities
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section section--alt" id="capabilities">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title">六大诊断维度</h2>
+      <p class="section-subtitle" style="margin:0.75rem auto 0;">从爬虫可访达到答案就绪，全面评估页面 GEO 成熟度</p>
+    </div>
+    <div class="grid-3" id="capabilityGrid">
+      <!-- Cards populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 4: Industries / Page Types
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="industries">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">Page Types</p>
+      <h2 class="section-title">适用页面类型</h2>
+      <p class="section-subtitle" style="margin:0.75rem auto 0;">适用于多种业务场景，从产品定价页到技术文档</p>
+    </div>
+    <div class="industry-scroll" id="industryScroll">
+      <!-- Populated by JS -->
+    </div>
+    <p class="caption text-center" style="margin-top:1.5rem;">自动检测页面类型，匹配最优 GEO 策略</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 5: Stats
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section section--alt" id="stats">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">By the Numbers</p>
+      <h2 class="section-title">诊断能力概览</h2>
+    </div>
+    <div class="grid-4" id="statsGrid">
+      <!-- Populated by JS -->
+    </div>
+    <p class="body-sm text-center" style="margin-top:2rem;color:var(--text-tertiary);max-width:500px;margin-left:auto;margin-right:auto;">
+      每个诊断覆盖 6 个核心维度，调用 25+ 条 GEO 优化策略，单次分析即可产出问题清单、优先动作和可直接使用的资产草案
+    </p>
+  </div>
+</section>
+<div class="section-divider"></div>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 6: Workflow
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="workflow">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">诊断工作流</h2>
+    </div>
+    <div class="stepper" id="stepper">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 7: Insights / Knowledge Base
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section section--alt" id="insights">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">Knowledge Base</p>
+      <h2 class="section-title">GEO 方法知识库</h2>
+      <p class="section-subtitle" style="margin:0.75rem auto 0;">基于前沿论文和开源项目，持续更新优化策略</p>
+    </div>
+    <div class="grid-3" id="insightsGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 8: FAQ
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-header anim-fade-in-up">
+      <p class="section-label">FAQ</p>
+      <h2 class="section-title">常见问题</h2>
+    </div>
+    <dl class="faq" id="faqList">
+      <!-- Populated by JS -->
+    </dl>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     Section 9: Analysis Result + CTA
+     ═════════════════════════════════════════════════════════════════════════ -->
+<section class="section section--alt analysis" id="analysis-section">
+  <div class="container" id="analysisContent">
+    <!-- Dynamically rendered by JS when analysis is triggered -->
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <h2 class="cta__title anim-fade-in-up">准备好优化你的页面了吗？</h2>
+  <p class="cta__sub anim-fade-in-up">输入任意网址，获得结构化 GEO 优化报告</p>
+  <a href="#hero" class="btn btn--primary anim-fade-in-up" style="font-size:1rem;padding:0.85rem 2rem;">开始诊断 &rarr;</a>
+</section>
+
+<footer class="footer-bottom" id="footer">
+  <p>GEO Copilot v0.1 — 基于页面证据的 AI 搜索优化诊断引擎</p>
+  <p style="margin-top:0.35rem;font-size:0.7rem;">GEO 方法基于前沿论文 · 诊断结果仅供优化参考</p>
+</footer>
+
+<!-- ═════════════════════════════════════════════════════════════════════════
+     JavaScript
+     ═════════════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── Mock Data ──────────────────────────────────────────────────────────── */
+const MOCK = {
+  analyses: [
+    { id:"analysis_001", url:"https://www.saas-product.com/pricing", status:"completed", created:"2026-06-19", lang:"zh-CN" },
+    { id:"analysis_002", url:"https://example.com/blog/ai-trends-2026", status:"completed", created:"2026-06-19", lang:"zh-CN" },
+    { id:"analysis_003", url:"https://blocked-site.com/crawlers-denied", status:"completed", created:"2026-06-18", lang:"zh-CN" },
+    { id:"analysis_004", url:"https://docs.theproduct.com/api-reference", status:"running", created:"2026-06-19", lang:"zh-CN" },
+    { id:"analysis_005", url:"https://garbage.link/nx8k2p", status:"failed", created:"2026-06-18", lang:"zh-CN" }
+  ],
+  detail: {
+    id:"analysis_001", input_url:"https://www.saas-product.com/pricing",
+    status:"completed", language:"zh-CN", business_type:"b2b_saas",
+    created_at:"2026-06-19T10:30:00Z", completed_at:"2026-06-19T10:31:25Z",
+    geo_score:42,
+    score_breakdown:{ crawl_access:50, entity_clarity:35, structured_data:25, citability:30, evidence_support:20, answer_readiness:55 },
+    executive_summary:"该页面在基础 SEO 层面合格，但 GEO 就绪度严重不足。核心问题集中在三方面：GPTBot 被屏蔽导致无法被 ChatGPT 访问；所有 claims 缺乏证据支撑导致无法被 AI 安全引用；缺少 llms.txt 和 Product schema 等关键 AI 访问通道。",
+    selection_layer:{ crawl_access:"risk", entity_clarity:"partial", authority_signals:["Organization schema 已存在"], blockers:["GPTBot 在 robots.txt 中被屏蔽","llms.txt 文件缺失","无 sameAs 链接验证实体身份"] },
+    absorption_layer:{ answer_ready_summary:"missing", evidence_density:"weak", semantic_alignment:"partial", structural_legibility:"partial", blockers:["无 answer-ready summary 区块","Claims 缺乏证据支撑 (0/3 完全支持)","无统计数据或外部引用"] },
+    issues:[
+      { id:"issue_001", severity:"high", category:"crawl_access", finding:"GPTBot 在 robots.txt 中被明确屏蔽。ChatGPT 无法将该页面作为来源进行检索和引用。", why:"如果被主流 AI 爬虫屏蔽，页面内容无法进入生成式答案的候选来源。citation selection 是 GEO 的入口条件。" },
+      { id:"issue_002", severity:"high", category:"evidence_support", finding:"页面有 3 个事实性 claims，但没有任何一个提供可核验的来源、数据或引用。", why:"无证据支撑的 claims 在 AI 答案生成中会被判定为不可信，内容难以被安全引用。" },
+      { id:"issue_003", severity:"high", category:"crawl_access", finding:"缺少 llms.txt 文件。该文件正成为 AI 爬虫获取页面结构化信息的标准入口。", why:"llms.txt 允许网站主动告知 AI 哪些内容是核心信息，是提升 absorption quality 的低成本高收益手段。" },
+      { id:"issue_004", severity:"medium", category:"structured_data", finding:"仅有 Organization 类型的 JSON-LD schema，缺少 Product 和 FAQPage schema。", why:"Product schema 让 AI 能结构化读取产品价格和功能；FAQPage schema 让 FAQ 可被直接提取为答案单元。" },
+      { id:"issue_005", severity:"medium", category:"entity_clarity", finding:"页面实体缺少 sameAs 链接来交叉验证实体身份。", why:"sameAs 是 AI 搜索引擎确认实体身份和权威性的关键信号。没有 sameAs，AI 无法确定该组织是否为真实存在的实体。" },
+      { id:"issue_006", severity:"medium", category:"answer_readiness", finding:"页面缺少 answer-ready summary 区块。首屏直接进入 pricing tiers，没有产品简要定义和核心价值主张。", why:"AI 答案引擎偏好有明确 summary 的页面——2-3 句的实体定义+核心价值陈述可显著提升 absorption 概率。" },
+      { id:"issue_007", severity:"low", category:"citability", finding:"FAQ 区块的回答过于简短，缺少具体条件、范围和证据，降低了可引用价值。", why:"FAQ 内容只有在回答具体、有证据支撑时才具备高可引用性。过于泛化的 FAQ 对 AI 答案质量贡献有限。" }
+    ],
+    priority_actions:[
+      { priority:1, action:"修改 robots.txt，允许 GPTBot、OAI-SearchBot、ClaudeBot、Google-Extended 等主流 AI 爬虫访问", effect:"恢复页面被 ChatGPT、Claude 等 AI 搜索引擎发现和索引的能力", effort:"low" },
+      { priority:2, action:"为 'trusted by over 10,000 companies' 添加可链接的数据来源（如 Trustpilot、G2 评分、或第三方审计报告）", effect:"将最高频的品牌 claim 从 unsupported 变为 fully_supported，提升可验证性", effort:"low" },
+      { priority:3, action:"创建 llms.txt 文件，声明页面核心信息和结构化数据入口", effect:"为 AI 爬虫提供结构化的页面导览，提升信息被准确提取的概率", effort:"low" },
+      { priority:4, action:"添加 Product JSON-LD schema，包含价格、功能、适用团队规模等字段", effect:"让 AI 能结构化读取产品定价信息，提升 purchase intent 搜索的匹配度", effort:"medium" },
+      { priority:5, action:"在页面顶部添加 2-3 句 answer-ready summary", effect:"提升 AI 答案引擎对页面核心价值的提取和引用概率", effort:"low" }
+    ],
+    asset_drafts:[
+      { type:"json_ld", label:"JSON-LD Schema", code:'{\n  "@context": "https://schema.org",\n  "@type": "Product",\n  "name": "SaaS Product — AI-Powered Workflow Automation",\n  "description": "Flexible AI automation platform for teams.",\n  "offers": {\n    "@type": "AggregateOffer",\n    "lowPrice": "29",\n    "highPrice": "Custom",\n    "priceCurrency": "USD",\n    "offerCount": "3"\n  },\n  "provider": {\n    "@type": "Organization",\n    "name": "SaaS Product Inc.",\n    "sameAs": ["https://linkedin.com/company/saas-product"]\n  }\n}', needs_confirmation:["需确认 provider.sameAs 中的实际社交/权威链接","需补充产品具体功能特性和适用行业"] },
+      { type:"faq", label:"FAQ 草案", code:'# Frequently Asked Questions\n\n## Do you offer price matching?\nYes, we match any competitor plan feature-for-feature.\nSubmit your competitor\'s plan URL to support@saas-product.com.\n\n## Can I cancel anytime?\nYes. All plans are month-to-month with no lock-in.\nCancel from dashboard at any time.\n\n## What AI models does the platform use?\nIntegrates with GPT-4o, Claude Fable 5, and Gemini 2.0\nthrough configurable connectors.', needs_confirmation:["FAQ中的具体AI模型需与产品实际集成确认","价格匹配的竞品列表和邮箱需确认"] },
+      { type:"summary", label:"Answer-Ready Summary", code:"SaaS Product is an AI-powered workflow automation\nplatform that helps engineering and ops teams automate\nrepetitive tasks, integrate tools, and ship faster. Built\nfor teams of 5 to 5,000, it offers visual workflow\nbuilding, real-time analytics, and enterprise-grade\nsecurity. Founded in 2020, SaaS Product Inc. serves\nover 10,000 companies.", needs_confirmation:["统计数据需有第三方来源验证","成立年份和公司规模需确认"] },
+      { type:"llms_txt", label:"llms.txt", code:"# SaaS Product — Pricing Page\n> LLMs.txt for AI crawler consumption\n\n## Page Identity\n- Type: Product Pricing Page\n- Entity: SaaS Product Inc. (B2B SaaS)\n- Primary Intent: Purchase evaluation\n\n## Key Information\n- Plans: Starter ($29), Pro ($99), Enterprise (Custom)\n- Free trial: 14 days, no credit card\n- Cancellation: Month-to-month\n\n## Structured Data\n- Organization schema: present\n- Product schema: missing\n- FAQPage schema: missing\n\n## For AI Crawlers\n- robots.txt: contains GPTBot restriction\n- Sitemap: /sitemap.xml", needs_confirmation:["价格数据需与实际定价对齐","sitemap URL 需确认"] }
+    ],
+    unknowns:["GPTBot 屏蔽是否为有意决策还是历史遗留","10,000 companies 数据是否有内部数据支撑但未在页面上展示","该页面实际在 ChatGPT/Perplexity 搜索结果中的可见性（需要实际采样）"]
+  },
+  capabilities:[
+    { num:"01", title:"爬虫可访问", desc:"检测 robots.txt、AI bot 屏蔽规则、sitemap 可见性和 llms.txt 存在性——AI 搜索引擎是否能看到你的页面？", items:["robots.txt 可访问性检查","GPTBot / ClaudeBot / PerplexityBot 屏蔽检测","llms.txt 自动生成与检查","JS 渲染依赖风险评估"] },
+    { num:"02", title:"实体清晰度", desc:"分析页面实体的识别度、权威信号和身份可验证性——AI 能否确认你是谁？", items:["实体 Schema 存在性与完整性","sameAs 权威链接覆盖度","品牌信号一致性评估","实体关联网络密度"] },
+    { num:"03", title:"结构化数据", desc:"评估 JSON-LD Schema 的覆盖范围和质量，确保 AI 能结构化理解页面信息。", items:["JSON-LD 数量与类型检测","Product / FAQPage / Article Schema","Schema 字段完整度评估","结构化数据错误诊断"] },
+    { num:"04", title:"可引用性", desc:"检测内容中可被 AI 直接引用的文本单元——Claims、统计数据、FAQ 和对比信息。", items:["Claims 可引用性检测","回答就绪候选文本评分","FAQ 完整度分析","对比信息结构体检"] },
+    { num:"05", title:"证据支撑", desc:"验证每个事实性主张是否有对应证据——数据来源、引用链接和可核验事实。", items:["Claim-Evidence 配对检测","数据来源可验证性","引用完整度 (Citation Recall)","统计口径清晰度评估"] },
+    { num:"06", title:"答案就绪", desc:"评估页面作为 AI 答案源的综合素质——总结块、结构化呈现和语义对齐度。", items:["Answer-Ready Summary 检测","文档级结构优化建议","语义对齐度评分","内容块层次合理性"] }
+  ],
+  industries:[
+    { icon:"&#x1f4e6;", title:"B2B SaaS 产品页", desc:"定价、功能对比、购买决策" },
+    { icon:"&#x1f4dd;", title:"技术博客 / 文章", desc:"观点论述、教程、行业洞察" },
+    { icon:"&#x1f4da;", title:"API 技术文档", desc:"开发者文档、接口参考" },
+    { icon:"&#x1f6cd;", title:"电商 Landing Page", desc:"产品详情、品牌页面" },
+    { icon:"&#x1f3e2;", title:"企业官网", desc:"公司介绍、服务展示" }
+  ],
+  stats:[
+    { number:6, label:"GEO 诊断维度" },
+    { number:25, label:"GEO 方法策略" },
+    { number:7, label:"单次诊断问题检测" },
+    { number:4, label:"资产草案类型" }
+  ],
+  workflow:[
+    { title:"页面抓取", desc:"获取 HTML、HTTP 状态码、元数据和 robots.txt" },
+    { title:"结构解析", desc:"提取标题层级、Schema、内容块和 FAQ" },
+    { title:"方法检索", desc:"从知识库中匹配最相关的 GEO 优化策略" },
+    { title:"GEO 诊断", desc:"AI 引擎输出结构化诊断反馈和评分" },
+    { title:"报告生成", desc:"汇总为可操作的优化报告和资产草案" }
+  ],
+  insights:[
+    { trust:"high", title:"GEO: Generative Engine Optimization (2024)", excerpt:"添加可核验来源、用数量化事实替代空泛描述、引入可引用原文——这三类优化在 AI 搜索结果中有效提升可见性。核心发现：GEO 优化不依赖传统排名信号，而是让内容本身成为 AI 答案的原材料。" },
+    { trust:"high", title:"Evaluating Verifiability in GSEs (2023)", excerpt:"提出 Citation Recall 和 Citation Precision 作为 GEO 输出质量的核心评估指标。AI 搜索引擎对不可验证 claims 的引用存在系统性抑制。组织内容为 claim-evidence pairs 是最有效的优化方法。" },
+    { trust:"medium", title:"From Citation Selection to Absorption (2026)", excerpt:"将 GEO 诊断拆分为两个独立阶段：Citation Selection（页面能否进入 AI 候选来源）和 Citation Absorption（内容能否影响最终答案）。两者失败原因不同，需要分别诊断和优化。" }
+  ],
+  faq:[
+    { q:"GEO 和 SEO 有什么区别？", a:"SEO 关注页面在搜索引擎结果页面的排名位置，主要通过关键词、外链、技术优化等传统信号竞争。GEO 关注页面内容是否在 AI 生成式引擎（如 ChatGPT、Perplexity）的答案中被引用和吸收。两者的核心评估指标完全不同——SEO 看排名，GEO 看引用率和吸收质量。" },
+    { q:"GEO Copilot 适合哪些类型的页面？", a:"目前支持 B2B SaaS 产品页、技术博客/文章、API 技术文档、电商 Landing Page 和企业官网。系统会自动检测页面类型并匹配对应的最优 GEO 策略。未来将持续扩展更多页面类型。" },
+    { q:"分析一次需要多长时间？", a:"单次分析通常需要 1-2 分钟。这取决于目标页面的加载速度（页面抓取阶段）和 AI 引擎的响应速度（GEO 诊断阶段）。分析完成后会自动生成完整的报告和资产草案。" },
+    { q:"诊断结果能保证 AI 搜索排名提升吗？", a:"不能。GEO 优化是一个持续迭代的过程，单次诊断只能发现当前页面的不足并提供优化方向。AI 搜索引擎的引用行为受多种因素影响，包括页面质量、权威性、时效性和用户查询意图。建议定期对关键页面进行 GEO 诊断，跟踪分数变化趋势。" },
+    { q:"如何解读 GEO 评分？", a:"GEO 评分范围为 0-100，从六个维度综合评估：爬虫可访问 (Crawl Access)、实体清晰度 (Entity Clarity)、结构化数据 (Structured Data)、可引用性 (Citability)、证据支撑 (Evidence Support) 和答案就绪 (Answer Readiness)。一般 >60 分为良好，30-60 分需优化，<30 分存在严重短板。" },
+    { q:"生成的 JSON-LD / llms.txt 可以直接使用吗？", a:"部分可以直接使用，部分需要人工确认。每个资产草案都标注了 needs_human_confirmation 字段，列明需要你确认的具体事项（如公司名称、产品特性、统计数据来源等）。建议在使用前对照标注项逐条核实。" },
+    { q:"GEO 诊断的依据是什么？方法是否可靠？", a:"GEO Copilot 的方法库基于已发表的 GEO 前沿研究论文和开源项目构建，每条优化策略都标注了来源论文和信任等级（High/Medium/Low）。诊断过程结合页面证据采集+知识库检索+AI 推理三个环节，确保每条输出都有明确的 evidence_ref 和 method_ref 可回溯。" }
+  ]
+};
+
+/* ── State ──────────────────────────────────────────────────────────────── */
+let activeTab = 'overview';
+
+/* ── Initialization ─────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderCapabilities();
+  renderIndustries();
+  renderStats();
+  renderWorkflow();
+  renderInsights();
+  renderFAQ();
+  initScrollObserver();
+});
+
+/* ── Scroll Observer ────────────────────────────────────────────────────── */
+function initScrollObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Check for stat counting trigger
+        if (entry.target.id === 'statsGrid' && !entry.target.dataset.counted) {
+          entry.target.dataset.counted = 'true';
+          animateStats();
+        }
+      }
+    });
+  }, { root: null, rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
+
+  document.querySelectorAll('.anim-fade-in-up, .anim-fade-in').forEach(el => observer.observe(el));
+  document.getElementById('statsGrid') && observer.observe(document.getElementById('statsGrid'));
+}
+
+/* ── Nav Scroll Effect ──────────────────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('topNav');
+  nav.classList.toggle('nav--scrolled', window.scrollY > 80);
+});
+
+/* ── Mobile Nav ─────────────────────────────────────────────────────────── */
+function toggleMobileNav() {
+  document.getElementById('mobileNav').classList.toggle('nav__mobile--open');
+}
+
+/* ── URL Form ───────────────────────────────────────────────────────────── */
+function clearError() {
+  document.getElementById('urlError').classList.remove('url-form__error--visible');
+  document.getElementById('urlFormGroup').classList.remove('url-form__group--error');
+}
+
+function handleAnalysis(e) {
+  e.preventDefault();
+  clearError();
+  let url = document.getElementById('urlInput').value.trim();
+  if (!url) { showError('请输入 URL'); return; }
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  try { new URL(url); } catch { showError('URL 格式无效，请输入完整的网址'); return; }
+  // Scroll to analysis section and render
+  document.getElementById('urlInput').value = url;
+  renderAnalysis(url);
+  document.getElementById('analysis-section').classList.add('analysis--visible');
+  setTimeout(() => {
+    document.getElementById('analysis-section').scrollIntoView({ behavior:'smooth' });
+  }, 100);
+}
+
+function showError(msg) {
+  const el = document.getElementById('urlError');
+  el.textContent = msg;
+  el.classList.add('url-form__error--visible');
+  document.getElementById('urlFormGroup').classList.add('url-form__group--error');
+}
+
+function toggleAdvanced() {
+  document.getElementById('advancedPanel').classList.toggle('url-form__advanced-panel--open');
+}
+
+function showDemoAnalysis(id) {
+  document.getElementById('urlInput').value = MOCK.detail.input_url;
+  renderAnalysis(MOCK.detail.input_url);
+  document.getElementById('analysis-section').classList.add('analysis--visible');
+  setTimeout(() => {
+    document.getElementById('analysis-section').scrollIntoView({ behavior:'smooth' });
+  }, 100);
+}
+
+/* ── Render Functions ───────────────────────────────────────────────────── */
+function renderCapabilities() {
+  const grid = document.getElementById('capabilityGrid');
+  grid.innerHTML = MOCK.capabilities.map((c, i) => `
+    <div class="capability-card anim-fade-in-up" style="transition-delay:${i * 0.08}s">
+      <span class="capability-card__number">${c.num}</span>
+      <h3 class="capability-card__title">${c.title}</h3>
+      <p class="capability-card__desc body-sm">${c.desc}</p>
+      <ul class="capability-card__list">${c.items.map(it => `<li>${it}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
+function renderIndustries() {
+  document.getElementById('industryScroll').innerHTML = MOCK.industries.map((ind, i) => `
+    <div class="industry-card anim-fade-in-up" style="transition-delay:${i * 0.1}s">
+      <div class="industry-card__icon">${ind.icon}</div>
+      <h3 class="industry-card__title">${ind.title}</h3>
+      <p class="caption" style="margin-top:0.35rem;">${ind.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderStats() {
+  document.getElementById('statsGrid').innerHTML = MOCK.stats.map((s, i) => `
+    <div class="stat anim-fade-in-up" style="transition-delay:${i * 0.1}s">
+      <span class="stat__number" data-count-target="${s.number}" id="statNum${i}">0</span>
+      <span class="stat__label">${s.label}</span>
+    </div>
+  `).join('');
+}
+
+function renderWorkflow() {
+  document.getElementById('stepper').innerHTML = MOCK.workflow.map((w, i) => `
+    <div class="stepper__step anim-fade-in-up" style="transition-delay:${i * 0.12}s">
+      <div class="stepper__dot"></div>
+      <div class="stepper__line"></div>
+      <h4 class="stepper__step-title">${w.title}</h4>
+      <p class="stepper__step-desc">${w.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderInsights() {
+  document.getElementById('insightsGrid').innerHTML = MOCK.insights.map((ins, i) => `
+    <div class="insight-card anim-fade-in-up" style="transition-delay:${i * 0.12}s">
+      <span class="insight-card__badge insight-card__badge--${ins.trust}">信任等级: ${ins.trust === 'high' ? '高' : '中'}</span>
+      <h3 class="insight-card__title">${ins.title}</h3>
+      <p class="insight-card__excerpt">${ins.excerpt}</p>
+    </div>
+  `).join('');
+}
+
+function renderFAQ() {
+  document.getElementById('faqList').innerHTML = MOCK.faq.map((item, i) => `
+    <div class="faq-item">
+      <dt class="faq-item__question" onclick="toggleFaq(this)" aria-expanded="false">
+        <span>${item.q}</span>
+        <svg class="faq-item__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </dt>
+      <dd class="faq-item__answer"><div class="faq-item__answer-inner">${item.a}</div></dd>
+    </div>
+  `).join('');
+}
+
+function renderAnalysis(url) {
+  const d = MOCK.detail;
+  const sb = d.score_breakdown;
+  const barData = [
+    { key:'crawl_access', label:'爬虫可访问', val:sb.crawl_access },
+    { key:'entity_clarity', label:'实体清晰度', val:sb.entity_clarity },
+    { key:'structured_data', label:'结构化数据', val:sb.structured_data },
+    { key:'citability', label:'可引用性', val:sb.citability },
+    { key:'evidence_support', label:'证据支撑', val:sb.evidence_support },
+    { key:'answer_readiness', label:'答案就绪', val:sb.answer_readiness }
+  ];
+  const scoreColor = d.geo_score >= 60 ? 'var(--accent-score)' : d.geo_score >= 30 ? 'var(--accent-warning)' : 'var(--accent-danger)';
+  const scoreLabel = d.geo_score >= 60 ? '良好' : d.geo_score >= 30 ? '需优化' : '严重不足';
+  const circumference = 2 * Math.PI * 52;
+  const offset = circumference - (d.geo_score / 100) * circumference;
+
+  document.getElementById('analysisContent').innerHTML = `
+    <div class="analysis__header anim-fade-in-up">
+      <div class="analysis__url">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
+        ${url}
+      </div>
+      <div class="analysis__meta">
+        <span>${new Date(d.created_at).toLocaleString('zh-CN')}</span>
+        <span>语言: ${d.language}</span>
+        <span>类型: ${d.business_type || '自动检测'}</span>
+        <a href="#hero" style="color:var(--accent-secondary);text-decoration:underline;">重新分析 &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Score Overview -->
+    <div class="score-overview anim-fade-in-up">
+      <div class="score-ring-wrap">
+        <svg class="score-ring" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" class="score-ring__bg"/>
+          <circle cx="60" cy="60" r="52" class="score-ring__progress" stroke="${scoreColor}"
+                  stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
+                  transform="rotate(-90 60 60)" id="scoreRingProgress"/>
+          <text x="60" y="54" text-anchor="middle" class="score-ring__number">${d.geo_score}</text>
+          <text x="60" y="70" text-anchor="middle" class="score-ring__label">/ 100</text>
+        </svg>
+        <span class="score-text" style="color:${scoreColor}">${scoreLabel}</span>
+      </div>
+      <div class="score-bars">
+        ${barData.map(b => {
+          const barColor = b.val >= 60 ? 'var(--accent-score)' : b.val >= 30 ? 'var(--accent-warning)' : 'var(--accent-danger)';
+          return `<div class="score-bar">
+            <span class="score-bar__label">${b.label}</span>
+            <div class="score-bar__track"><div class="score-bar__fill" style="background:${barColor};width:0%" data-bar-width="${b.val}%"></div></div>
+            <span class="score-bar__value">${b.val}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="exec-summary anim-fade-in-up">
+      <p class="exec-summary__title">&#x1f4a1; 执行摘要</p>
+      <p class="body-sm">${d.executive_summary}</p>
+    </div>
+
+    <!-- Selection & Absorption -->
+    <div class="layer-cards anim-fade-in-up">
+      <div class="layer-card">
+        <h3 class="layer-card__title">Citation Selection</h3>
+        <div class="layer-card__status"><span class="layer-dot layer-dot--warn"></span> 爬虫可访问: ${d.selection_layer.crawl_access === 'risk' ? '有风险' : '通过'}</div>
+        <div class="layer-card__status"><span class="layer-dot layer-dot--warn"></span> 实体清晰度: ${d.selection_layer.entity_clarity === 'partial' ? '部分清晰' : '清晰'}</div>
+        <div style="margin-top:0.75rem;font-size:0.78rem;font-weight:600;color:var(--accent-score);">权威信号</div>
+        ${d.selection_layer.authority_signals.map(s => `<div style="font-size:0.78rem;color:var(--text-secondary);padding-left:0.75rem;">+ ${s}</div>`).join('')}
+        <div style="margin-top:0.75rem;font-size:0.78rem;font-weight:600;color:var(--accent-danger);">阻塞项</div>
+        ${d.selection_layer.blockers.map(b => `<div class="layer-card__blocker">${b}</div>`).join('')}
+      </div>
+      <div class="layer-card">
+        <h3 class="layer-card__title">Citation Absorption</h3>
+        <div class="layer-card__status"><span class="layer-dot layer-dot--bad"></span> 答案就绪: ${d.absorption_layer.answer_ready_summary === 'missing' ? '缺失' : '存在'}</div>
+        <div class="layer-card__status"><span class="layer-dot layer-dot--bad"></span> 证据密度: ${d.absorption_layer.evidence_density === 'weak' ? '薄弱' : '正常'}</div>
+        <div class="layer-card__status"><span class="layer-dot layer-dot--warn"></span> 语义对齐: ${d.absorption_layer.semantic_alignment === 'partial' ? '部分对齐' : '对齐'}</div>
+        <div style="margin-top:0.75rem;font-size:0.78rem;font-weight:600;color:var(--accent-danger);">阻塞项</div>
+        ${d.absorption_layer.blockers.map(b => `<div class="layer-card__blocker">${b}</div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs anim-fade-in-up">
+      <div class="tabs__list">
+        <button class="tab-btn tab-btn--active" data-tab="overview" onclick="switchTab('overview')">总览</button>
+        <button class="tab-btn" data-tab="issues" onclick="switchTab('issues')">问题<span class="tab-btn__count">(${d.issues.length})</span></button>
+        <button class="tab-btn" data-tab="actions" onclick="switchTab('actions')">优先动作<span class="tab-btn__count">(${d.priority_actions.length})</span></button>
+        <button class="tab-btn" data-tab="assets" onclick="switchTab('assets')">资产草案<span class="tab-btn__count">(${d.asset_drafts.length})</span></button>
+        <button class="tab-btn" data-tab="unknowns" onclick="switchTab('unknowns')">未知项<span class="tab-btn__count">(${d.unknowns.length})</span></button>
+      </div>
+
+      <!-- Tab: Overview -->
+      <div class="tab-panel tab-panel--active" id="panel-overview">
+        <p style="font-size:0.9rem;color:var(--text-secondary);margin:1.5rem 0 1rem;">以下展示诊断中发现的关键阻塞项和最高优先级动作。切换到其他标签页查看完整的问题列表、优化建议和资产草案。</p>
+        <h4 style="font-size:0.95rem;font-weight:600;color:var(--text-primary);margin-bottom:0.75rem;">最高优先级动作</h4>
+        ${d.priority_actions.slice(0,3).map((a,i) => `
+          <div class="action-card">
+            <div class="action-card__priority">${a.priority}</div>
+            <div class="action-card__content">
+              <p class="action-card__action">${a.action}</p>
+              <p class="action-card__effect">预期效果: ${a.effect}</p>
+              <span class="badge badge--${a.effort === 'low' ? 'success' : a.effort === 'medium' ? 'warning' : 'danger'}" style="margin-top:0.4rem;">投入: ${a.effort === 'low' ? '低' : a.effort === 'medium' ? '中' : '高'}</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Tab: Issues -->
+      <div class="tab-panel" id="panel-issues">
+        ${['high','medium','low'].map(sev => {
+          const sevLabel = sev === 'high' ? '严重' : sev === 'medium' ? '中等' : '轻微';
+          const sevClass = sev === 'high' ? 'danger' : sev === 'medium' ? 'warning' : 'info';
+          const groupIssues = d.issues.filter(is => is.severity === sev);
+          if (!groupIssues.length) return '';
+          return `<div style="margin-top:1.5rem"><h4 style="font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:0.75rem;">${sevLabel} (${groupIssues.length})</h4>
+            ${groupIssues.map(is => `
+              <div class="issue-card issue-card--${is.severity}" id="issue-${is.id}">
+                <div class="issue-card__header">
+                  <span class="badge badge--${sevClass}">${sevLabel}</span>
+                  <span class="badge badge--outline">${is.category}</span>
+                </div>
+                <p class="issue-card__finding">${is.finding}</p>
+                <p class="issue-card__why">${is.why}</p>
+              </div>
+            `).join('')}</div>`;
+        }).join('')}
+      </div>
+
+      <!-- Tab: Actions -->
+      <div class="tab-panel" id="panel-actions">
+        ${d.priority_actions.map((a,i) => `
+          <div class="action-card anim-fade-in-up" style="margin-top:0.75rem;">
+            <div class="action-card__priority" style="${a.priority <= 3 ? 'color:var(--accent-score);background:rgba(27,67,50,0.08);' : ''}">${a.priority}</div>
+            <div class="action-card__content">
+              <p class="action-card__action">${a.action}</p>
+              <p class="action-card__effect">预期效果: ${a.effect}</p>
+              <span class="badge badge--${a.effort === 'low' ? 'success' : a.effort === 'medium' ? 'warning' : 'danger'}" style="margin-top:0.4rem;">投入: ${a.effort === 'low' ? '低' : a.effort === 'medium' ? '中' : '高'}</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Tab: Assets -->
+      <div class="tab-panel" id="panel-assets">
+        ${d.asset_drafts.map((a,i) => `
+          <div class="asset-card" style="margin-top:0.75rem;">
+            <div class="asset-card__header">
+              <div style="display:flex;gap:0.5rem;align-items:center;">
+                <span class="badge badge--info">${a.label}</span>
+                <span class="badge badge--outline">zh-CN</span>
+              </div>
+              <button class="copy-btn" onclick="copyCode(this, 'asset-code-${i}')">复制</button>
+            </div>
+            <pre class="asset-card__code" id="asset-code-${i}"><code>${escapeHTML(a.code)}</code></pre>
+            ${a.needs_confirmation.map(c => `<p class="asset-card__confirm">${c}</p>`).join('')}
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Tab: Unknowns -->
+      <div class="tab-panel" id="panel-unknowns">
+        <div class="layer-card" style="margin-top:1.5rem;">
+          <h3 style="display:flex;align-items:center;gap:0.5rem;font-size:0.95rem;color:var(--text-primary);margin-bottom:1rem;">
+            <span style="font-size:1.2rem;">&#x2753;</span> 诊断未知项
+          </h3>
+          ${d.unknowns.map(u => `<p style="font-size:0.85rem;color:var(--text-secondary);padding:0.4rem 0;border-bottom:1px solid var(--border-light);">${u}</p>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Animate score ring and bars after render
+  setTimeout(() => {
+    const ring = document.getElementById('scoreRingProgress');
+    if (ring) ring.setAttribute('stroke-dashoffset', offset);
+    document.querySelectorAll('.score-bar__fill').forEach(bar => {
+      bar.style.width = bar.dataset.barWidth;
+    });
+    // Re-init scroll observer for new elements
+    document.querySelectorAll('#analysisContent .anim-fade-in-up, #analysisContent .anim-fade-in').forEach(el => {
+      el.classList.add('visible');
+    });
+  }, 150);
+}
+
+/* ── Tab Switching ──────────────────────────────────────────────────────── */
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-btn--active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (btn) btn.classList.add('tab-btn--active');
+  const panel = document.getElementById(`panel-${tabName}`);
+  if (panel) panel.classList.add('tab-panel--active');
+  activeTab = tabName;
+}
+
+/* ── FAQ Accordion ──────────────────────────────────────────────────────── */
+function toggleFaq(dt) {
+  const item = dt.parentElement;
+  const dd = dt.nextElementSibling;
+  const isOpen = item.classList.contains('faq-item--open');
+  // Single-open mode: close others
+  document.querySelectorAll('.faq-item--open').forEach(el => {
+    if (el !== item) {
+      el.classList.remove('faq-item--open');
+      const otherDD = el.querySelector('.faq-item__answer');
+      if (otherDD) otherDD.style.maxHeight = '0';
+      const otherDT = el.querySelector('.faq-item__question');
+      if (otherDT) otherDT.setAttribute('aria-expanded', 'false');
+    }
+  });
+  if (!isOpen) {
+    item.classList.add('faq-item--open');
+    dd.style.maxHeight = dd.scrollHeight + 'px';
+    dt.setAttribute('aria-expanded', 'true');
+  } else {
+    item.classList.remove('faq-item--open');
+    dd.style.maxHeight = '0';
+    dt.setAttribute('aria-expanded', 'false');
+  }
+}
+
+/* ── Number Counting Animation ──────────────────────────────────────────── */
+function animateStats() {
+  document.querySelectorAll('.stat__number').forEach(el => {
+    const target = parseInt(el.dataset.countTarget);
+    animateCount(el, target);
+  });
+}
+function animateCount(el, target, duration = 1500) {
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    el.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+/* ── Copy to Clipboard ──────────────────────────────────────────────────── */
+function copyCode(btn, codeId) {
+  const codeEl = document.getElementById(codeId);
+  if (!codeEl) return;
+  navigator.clipboard.writeText(codeEl.textContent).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copy-btn--copied');
+    setTimeout(() => {
+      btn.textContent = '复制';
+      btn.classList.remove('copy-btn--copied');
+    }, 2000);
+  }).catch(() => {
+    btn.textContent = '复制失败';
+    setTimeout(() => { btn.textContent = '复制'; }, 2000);
+  });
+}
+
+/* ── Utility ────────────────────────────────────────────────────────────── */
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+</script>
+</body>
+</html>

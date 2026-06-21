@@ -22,9 +22,9 @@ const DIMENSIONS = [
 ] as const;
 
 function getScoreColor(score: number): string {
-  if (score >= 60) return "#10b981";
-  if (score >= 30) return "#f59e0b";
-  return "#f43f5e";
+  if (score >= 60) return "#1b4332";
+  if (score >= 30) return "#8b6914";
+  return "#7c2d3e";
 }
 
 function getScoreLabel(score: number): string {
@@ -58,7 +58,7 @@ export function ScoreOverview({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 animate-fade-in">
       {/* Big Score Ring */}
-      <Card className="lg:col-span-2 border-border bg-card/60">
+      <Card className="lg:col-span-2 border-border bg-white">
         <CardContent className="flex flex-col items-center justify-center py-8">
           <div className="relative inline-flex items-center justify-center">
             <svg width="140" height="140" viewBox="0 0 120 120">
@@ -67,7 +67,7 @@ export function ScoreOverview({
                 cy="60"
                 r="54"
                 fill="none"
-                stroke="hsl(217 33% 17%)"
+                stroke="hsl(220 13% 88%)"
                 strokeWidth="8"
               />
               <circle
@@ -106,7 +106,7 @@ export function ScoreOverview({
       </Card>
 
       {/* Radar Chart */}
-      <Card className="lg:col-span-3 border-border bg-card/60">
+      <Card className="lg:col-span-3 border-border bg-white">
         <CardHeader className="pb-1">
           <CardTitle className="text-sm font-medium">
             六维评分
@@ -116,18 +116,18 @@ export function ScoreOverview({
           <div className="h-[220px] -mx-2">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={chartData}>
-                <PolarGrid stroke="hsl(217 33% 17%)" />
+                <PolarGrid stroke="hsl(220 13% 88%)" />
                 <PolarAngleAxis
                   dataKey="dimension"
                   tick={{
-                    fill: "hsl(215 20% 65%)",
+                    fill: "hsl(240 10% 50%)",
                     fontSize: 11,
                   }}
                 />
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 100]}
-                  tick={{ fill: "hsl(215 20% 65%)", fontSize: 10 }}
+                  tick={{ fill: "hsl(240 10% 50%)", fontSize: 10 }}
                   axisLine={false}
                   tickCount={3}
                 />

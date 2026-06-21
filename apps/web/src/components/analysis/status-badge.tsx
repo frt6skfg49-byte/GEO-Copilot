@@ -24,7 +24,7 @@ const STATUS_CONFIG: Record<
     label: "已完成",
     icon: CheckCircle2,
     className:
-      "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+      "bg-primary/8 text-primary border-primary/15",
   },
   failed: {
     label: "失败",

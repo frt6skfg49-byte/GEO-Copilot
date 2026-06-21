@@ -8,15 +8,15 @@ import type { GeoSemanticReadout } from "@/lib/types";
 
 function StatusDot({ status }: { status: string }) {
   const colorMap: Record<string, string> = {
-    pass: "bg-emerald-500",
-    strong: "bg-emerald-500",
+    pass: "bg-primary",
+    strong: "bg-primary",
     risk: "bg-amber-500",
     fail: "bg-destructive",
     partial: "bg-amber-500",
     weak: "bg-destructive",
     missing: "bg-destructive",
     unknown: "bg-muted-foreground",
-    present: "bg-emerald-500",
+    present: "bg-primary",
   };
   return (
     <span
@@ -50,7 +50,7 @@ export function SelectionAbsorption({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
       {/* Selection Layer */}
-      <Card className="border-border bg-card/40">
+      <Card className="border-border bg-white">
         <CardContent className="pt-5 space-y-3">
           <div className="flex items-center gap-2">
             <Shield className="size-4 text-blue-400" />
@@ -100,7 +100,7 @@ export function SelectionAbsorption({
       </Card>
 
       {/* Absorption Layer */}
-      <Card className="border-border bg-card/40">
+      <Card className="border-border bg-white">
         <CardContent className="pt-5 space-y-3">
           <div className="flex items-center gap-2">
             <Brain className="size-4 text-purple-400" />

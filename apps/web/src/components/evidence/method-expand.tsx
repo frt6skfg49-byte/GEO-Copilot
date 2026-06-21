@@ -24,7 +24,7 @@ export function MethodExpand({ methodRef, methodChunks }: MethodExpandProps) {
 
   if (!chunk) {
     return (
-      <div className="rounded-lg border border-border bg-card/40 px-4 py-3">
+      <div className="rounded-lg border border-border bg-white px-4 py-3">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <BookOpen className="size-3.5" />
           <span className="font-mono text-[11px]">{methodRef}</span>
@@ -65,7 +65,7 @@ export function MethodExpand({ methodRef, methodChunks }: MethodExpandProps) {
           variant="outline"
           className={`text-[10px] px-1.5 py-0 ${
             chunk.trust_level === "high"
-              ? "border-emerald-500/20 text-emerald-400"
+              ? "border-primary/15 text-primary"
               : chunk.trust_level === "medium"
               ? "border-amber-500/20 text-amber-400"
               : "border-muted-foreground/20 text-muted-foreground"

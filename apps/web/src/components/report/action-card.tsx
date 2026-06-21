@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import type { PriorityAction, PageEvidencePack, MethodChunk } from "@/lib/types";
 
 const EFFORT_CONFIG: Record<string, { label: string; color: string }> = {
-  low: { label: "低投入", color: "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" },
+  low: { label: "低投入", color: "border-primary/15 text-primary bg-primary/5" },
   medium: { label: "中投入", color: "border-amber-500/20 text-amber-400 bg-amber-500/5" },
   high: { label: "高投入", color: "border-destructive/20 text-destructive bg-destructive/5" },
 };
@@ -25,7 +25,7 @@ export function ActionCard({ action, pageEvidence, methodChunks }: ActionCardPro
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Card className="border-border bg-card/40">
+    <Card className="border-border bg-white">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left cursor-pointer hover:bg-accent/20 transition-colors"
@@ -36,7 +36,7 @@ export function ActionCard({ action, pageEvidence, methodChunks }: ActionCardPro
               className={cn(
                 "flex size-7 items-center justify-center rounded-full text-xs font-bold shrink-0",
                 action.priority <= 3
-                  ? "bg-emerald-500/10 text-emerald-400"
+                  ? "bg-primary/8 text-primary"
                   : "bg-muted text-muted-foreground"
               )}
             >

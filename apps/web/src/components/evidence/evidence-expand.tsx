@@ -47,7 +47,7 @@ export function EvidenceExpand({
   const value = resolveEvidence(evidenceRef, pageEvidence);
   if (!value) {
     return (
-      <div className="rounded-lg border border-border bg-card/40 px-4 py-3">
+      <div className="rounded-lg border border-border bg-white px-4 py-3">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <FileSearch className="size-3.5" />
           <span className="font-mono text-[11px]">{evidenceRef}</span>
@@ -58,10 +58,10 @@ export function EvidenceExpand({
   }
 
   return (
-    <div className="rounded-lg border border-emerald-500/10 bg-emerald-500/[0.03] px-4 py-3">
+    <div className="rounded-lg border border-primary/8 bg-primary/[0.03] px-4 py-3">
       <div className="flex items-center gap-2 mb-2">
-        <FileSearch className="size-3.5 text-emerald-400" />
-        <span className="text-[11px] font-mono text-emerald-400/80">
+        <FileSearch className="size-3.5 text-primary" />
+        <span className="text-[11px] font-mono text-primary/80">
           {evidenceRef}
         </span>
       </div>

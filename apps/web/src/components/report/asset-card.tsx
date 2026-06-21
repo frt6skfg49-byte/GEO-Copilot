@@ -44,13 +44,13 @@ export function AssetCard({ asset, pageEvidence, methodChunks }: AssetCardProps)
   }
 
   return (
-    <Card className="border-border bg-card/40">
+    <Card className="border-border bg-white">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Badge
               variant="outline"
-              className="text-[11px] px-2 py-0.5 border-emerald-500/20 text-emerald-400 bg-emerald-500/5"
+              className="text-[11px] px-2 py-0.5 border-primary/15 text-primary bg-primary/5"
             >
               {ASSET_LABELS[asset.asset_type] || asset.asset_type}
             </Badge>
@@ -81,7 +81,7 @@ export function AssetCard({ asset, pageEvidence, methodChunks }: AssetCardProps)
               onClick={handleCopy}
             >
               {isCopied ? (
-                <Check className="size-3.5 text-emerald-400" />
+                <Check className="size-3.5 text-primary" />
               ) : (
                 <Copy className="size-3.5 text-muted-foreground" />
               )}

@@ -7,7 +7,7 @@ export function UnknownsList({ unknowns }: { unknowns: string[] }) {
   if (!unknowns || unknowns.length === 0) return null;
 
   return (
-    <Card className="border-border bg-card/40">
+    <Card className="border-border bg-white">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-sm font-medium">
           <HelpCircle className="size-4 text-amber-400" />

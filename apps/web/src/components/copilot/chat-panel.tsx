@@ -101,7 +101,7 @@ export function ChatPanel({
       {/* Desktop side panel */}
       <aside
         className={cn(
-          "hidden xl:block border-l border-border bg-card/30 w-[380px] shrink-0 flex-col",
+          "hidden xl:block border-l border-border bg-white w-[380px] shrink-0 flex-col",
           !isOpen && "w-[52px]"
         )}
       >
@@ -120,7 +120,7 @@ export function ChatPanel({
             {/* Header */}
             <div className="flex items-center justify-between px-4 h-14 shrink-0">
               <div className="flex items-center gap-2">
-                <Sparkles className="size-4 text-emerald-400" />
+                <Sparkles className="size-4 text-primary" />
                 <span className="text-sm font-medium">Copilot</span>
               </div>
               <Button
@@ -169,7 +169,7 @@ export function ChatPanel({
                       key={p}
                       onClick={() => handleSend(p)}
                       disabled={isSending}
-                      className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-emerald-500/20 hover:bg-emerald-500/5 transition-all disabled:opacity-50"
+                      className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-primary/15 hover:bg-primary/5 transition-all disabled:opacity-50"
                     >
                       {p}
                     </button>
@@ -213,7 +213,7 @@ export function ChatPanel({
           <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col animate-slide-up">
             <div className="flex items-center justify-between px-4 h-14 shrink-0 border-b border-border">
               <div className="flex items-center gap-2">
-                <Sparkles className="size-4 text-emerald-400" />
+                <Sparkles className="size-4 text-primary" />
                 <span className="text-sm font-medium">Copilot</span>
               </div>
               <Button
@@ -252,7 +252,7 @@ export function ChatPanel({
                       key={p}
                       onClick={() => handleSend(p)}
                       disabled={isSending}
-                      className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-emerald-500/20 hover:bg-emerald-500/5 transition-all disabled:opacity-50"
+                      className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-primary/15 hover:bg-primary/5 transition-all disabled:opacity-50"
                     >
                       {p}
                     </button>
@@ -309,7 +309,7 @@ function Bubble({ message }: { message: CopilotMessage }) {
         className={cn(
           "max-w-[90%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
           isUser
-            ? "bg-emerald-500/10 text-foreground border border-emerald-500/20"
+            ? "bg-primary/8 text-foreground border border-primary/15"
             : "bg-accent/50 text-foreground/85 border border-border"
         )}
       >

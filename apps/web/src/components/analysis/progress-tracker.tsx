@@ -62,7 +62,7 @@ export function ProgressTracker({ status }: { status: AnalysisStatus }) {
                 className={cn(
                   "flex size-6 items-center justify-center rounded-full shrink-0",
                   stepState === "done" &&
-                    "bg-emerald-500/10 text-emerald-400",
+                    "bg-primary/8 text-primary",
                   stepState === "active" &&
                     "bg-blue-500/10 text-blue-400",
                   stepState === "waiting" &&

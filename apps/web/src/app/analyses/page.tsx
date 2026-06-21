@@ -29,7 +29,7 @@ const STATUS_CONFIG: Record<
     label: "已完成",
     icon: CheckCircle2,
     color:
-      "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+      "bg-primary/8 text-primary border-primary/15",
   },
   running: {
     label: "分析中",
@@ -131,7 +131,7 @@ export default function HistoryPage() {
             onClick={() => setFilter(f.value)}
             className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
               filter === f.value
-                ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20"
+                ? "bg-primary/8 text-primary ring-1 ring-primary/15"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent"
             }`}
           >
@@ -153,7 +153,7 @@ export default function HistoryPage() {
       {isLoading && (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="border-border bg-card/30">
+            <Card key={i} className="border-border bg-white">
               <CardContent className="px-5 py-4 space-y-2">
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-3 w-1/3" />
@@ -211,7 +211,7 @@ function AnalysisRow({ analysis }: { analysis: Analysis }) {
 
   return (
     <Link href={`/analyses/${analysis.id}`}>
-      <Card className="group border-border bg-card/30 hover:bg-card/60 hover:border-emerald-500/15 transition-all cursor-pointer">
+      <Card className="group border-border bg-white hover:bg-white hover:border-primary/10 transition-all cursor-pointer">
         <CardContent className="flex items-center gap-4 px-5 py-3.5">
           <Globe className="size-4 shrink-0 text-muted-foreground" />
           <div className="flex-1 min-w-0">

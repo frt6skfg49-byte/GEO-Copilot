@@ -56,7 +56,7 @@ export function IssueCard({ issue, pageEvidence, methodChunks }: IssueCardProps)
   return (
     <Card
       className={cn(
-        "border-l-2 border-border bg-card/40 transition-all",
+        "border-l-2 border-border bg-white transition-all",
         isOpen && severity.bg,
         severity.border
       )}

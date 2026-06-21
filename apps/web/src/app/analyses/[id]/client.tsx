@@ -138,7 +138,7 @@ export function AnalysisDetailClient({
 
           {/* Running / Queued */}
           {isRunning && (
-            <Card className="border-border bg-card/40 animate-fade-in">
+            <Card className="border-border bg-white animate-fade-in">
               <CardContent className="py-8">
                 <ProgressTracker status={status} />
               </CardContent>
@@ -191,14 +191,14 @@ export function AnalysisDetailClient({
                 <TabsList className="w-full justify-start gap-1 bg-transparent border-b border-border rounded-none pb-0 h-auto">
                   <TabsTrigger
                     value="overview"
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
+                    className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
                   >
                     <BarChart3 className="size-3.5 mr-1.5" />
                     总览
                   </TabsTrigger>
                   <TabsTrigger
                     value="issues"
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
+                    className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
                   >
                     <ListChecks className="size-3.5 mr-1.5" />
                     问题
@@ -211,14 +211,14 @@ export function AnalysisDetailClient({
                   </TabsTrigger>
                   <TabsTrigger
                     value="actions"
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
+                    className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
                   >
                     <ArrowUpRight className="size-3.5 mr-1.5" />
                     优先动作
                   </TabsTrigger>
                   <TabsTrigger
                     value="assets"
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
+                    className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
                   >
                     <FileCode className="size-3.5 mr-1.5" />
                     资产草案
@@ -231,14 +231,14 @@ export function AnalysisDetailClient({
                   </TabsTrigger>
                   <TabsTrigger
                     value="layers"
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
+                    className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
                   >
                     <Layers className="size-3.5 mr-1.5" />
                     Layers
                   </TabsTrigger>
                   <TabsTrigger
                     value="unknowns"
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-emerald-500 rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
+                    className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none pb-2.5 text-xs data-[state=active]:text-foreground text-muted-foreground"
                   >
                     <HelpCircle className="size-3.5 mr-1.5" />
                     未知项
@@ -253,7 +253,7 @@ export function AnalysisDetailClient({
                   {diagnosis.priority_actions.slice(0, 3).length > 0 && (
                     <div>
                       <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
-                        <ArrowUpRight className="size-4 text-emerald-400" />
+                        <ArrowUpRight className="size-4 text-primary" />
                         最高优先级动作
                       </h3>
                       <PriorityActions
